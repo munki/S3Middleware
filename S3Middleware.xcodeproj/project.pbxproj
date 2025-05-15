@@ -6,19 +6,61 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C05764D32DD640C200FEF66A /* S3Middleware.plugin in Frameworks */ = {isa = PBXBuildFile; fileRef = C058EFAF2DD1BA1A002775E0 /* S3Middleware.plugin */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C05764D42DD640C200FEF66A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C058EFA72DD1BA1A002775E0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C058EFAE2DD1BA1A002775E0;
+			remoteInfo = S3Middleware;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		C05764CF2DD640C200FEF66A /* S3MiddlewareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = S3MiddlewareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C058EFAF2DD1BA1A002775E0 /* S3Middleware.plugin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = S3Middleware.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C05764DA2DD6423900FEF66A /* Exceptions for "S3Middleware" folder in "S3MiddlewareTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				MiddlewareProtocol.swift,
+				S3Middleware.swift,
+			);
+			target = C05764CE2DD640C200FEF66A /* S3MiddlewareTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		C05764D02DD640C200FEF66A /* S3MiddlewareTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = S3MiddlewareTests;
+			sourceTree = "<group>";
+		};
 		C058EFB12DD1BA1A002775E0 /* S3Middleware */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C05764DA2DD6423900FEF66A /* Exceptions for "S3Middleware" folder in "S3MiddlewareTests" target */,
+			);
 			path = S3Middleware;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C05764CC2DD640C200FEF66A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C05764D32DD640C200FEF66A /* S3Middleware.plugin in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C058EFAD2DD1BA1A002775E0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				C058EFB12DD1BA1A002775E0 /* S3Middleware */,
+				C05764D02DD640C200FEF66A /* S3MiddlewareTests */,
 				C058EFB02DD1BA1A002775E0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				C058EFAF2DD1BA1A002775E0 /* S3Middleware.plugin */,
+				C05764CF2DD640C200FEF66A /* S3MiddlewareTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -58,6 +102,29 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		C05764CE2DD640C200FEF66A /* S3MiddlewareTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C05764D82DD640C200FEF66A /* Build configuration list for PBXNativeTarget "S3MiddlewareTests" */;
+			buildPhases = (
+				C05764CB2DD640C200FEF66A /* Sources */,
+				C05764CC2DD640C200FEF66A /* Frameworks */,
+				C05764CD2DD640C200FEF66A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C05764D52DD640C200FEF66A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C05764D02DD640C200FEF66A /* S3MiddlewareTests */,
+			);
+			name = S3MiddlewareTests;
+			packageProductDependencies = (
+			);
+			productName = S3MiddlewareTests;
+			productReference = C05764CF2DD640C200FEF66A /* S3MiddlewareTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C058EFAE2DD1BA1A002775E0 /* S3Middleware */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C058EFB82DD1BA1A002775E0 /* Build configuration list for PBXNativeTarget "S3Middleware" */;
@@ -90,6 +157,9 @@
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					C05764CE2DD640C200FEF66A = {
+						CreatedOnToolsVersion = 16.3;
+					};
 					C058EFAE2DD1BA1A002775E0 = {
 						CreatedOnToolsVersion = 16.3;
 						LastSwiftMigration = 1630;
@@ -111,11 +181,29 @@
 			projectRoot = "";
 			targets = (
 				C058EFAE2DD1BA1A002775E0 /* S3Middleware */,
+				C05764CE2DD640C200FEF66A /* S3MiddlewareTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		C05764CD2DD640C200FEF66A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		C05764CB2DD640C200FEF66A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C058EFAC2DD1BA1A002775E0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -125,7 +213,46 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		C05764D52DD640C200FEF66A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C058EFAE2DD1BA1A002775E0 /* S3Middleware */;
+			targetProxy = C05764D42DD640C200FEF66A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		C05764D62DD640C200FEF66A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.googlecode.munki.S3MiddlewareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C05764D72DD640C200FEF66A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.googlecode.munki.S3MiddlewareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		C058EFB62DD1BA1A002775E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -279,6 +406,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C05764D82DD640C200FEF66A /* Build configuration list for PBXNativeTarget "S3MiddlewareTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C05764D62DD640C200FEF66A /* Debug */,
+				C05764D72DD640C200FEF66A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C058EFAA2DD1BA1A002775E0 /* Build configuration list for PBXProject "S3Middleware" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

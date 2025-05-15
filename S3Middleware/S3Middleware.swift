@@ -29,67 +29,99 @@ func sign(key: Data, message: String) -> Data {
     return Data(authenticationCode)
 }
 
-func getSignatureKey(key: String, datestamp: String, region: String) -> Data {
-    let keyData = Data("AWS4\(key)".utf8)
-    let kdate = sign(key: keyData, message: datestamp)
-    let kregion = sign(key: kdate, message: region)
-    let kservice = sign(key: kregion, message: "s3")
-    let signatureKey = sign(key: kservice, message: "aws4_request")
-    return signatureKey
-}
-
-/// Returns a dict that contains all the required header information.
-/// Each header is unique to the url requested.
-func s3AuthHeaders(_ url: String) -> [String: String] {
-    // better be a parsable url
-    guard let parsedURL = URL(string: url) else {
-        return [:]
-    }
-    // read some prefs
-    let accessKey = pref("AccessKey") as? String ?? ""
-    let secretKey = pref("SecretKey") as? String ?? ""
-    let region = pref("Region") as? String ?? ""
-    // make some datestamps
-    let now = Date()
-    let dateFormatter = DateFormatter()
-    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-    dateFormatter.dateFormat = "yyyMMdd'T'HHmmss'Z'"
-    let amzDate = dateFormatter.string(from: now)
-    dateFormatter.dateFormat = "yyyMMdd"
-    let datestamp = dateFormatter.string(from: now)
-    // start getting the components we need to build the
-    // auth headers
-    let method = "GET"
-    let canonicalURI = parsedURL.path
-    let host = parsedURL.host ?? ""
-    let canonicalizedQueryString = ""
-    let canonicalHeaders = "host:\(host)\nx-amz-date:\(amzDate)\n"
+class S3RequestHeadersBuilder {
+    let url: URL
+    let amzDate: String
+    let datestamp: String
     let signedHeaders = "host;x-amz-date"
-    let payloadHash = sha256hash(data: Data())
-    let canonicalRequest = [
-        method,
-        canonicalURI,
-        canonicalizedQueryString,
-        canonicalHeaders,
-        signedHeaders,
-        payloadHash,
-    ].joined(separator: "\n")
     let algorithm = "AWS4-HMAC-SHA256"
-    let credentialScope = "\(datestamp)/\(region)/s3/aws4_request"
-    let hashedRequest = sha256hash(data: Data(canonicalRequest.utf8))
-    let stringToSign = "\(algorithm)\n\(amzDate)\n\(credentialScope)\n\(hashedRequest)"
-    let signingKey = getSignatureKey(key: secretKey, datestamp: datestamp, region: region)
-    let signature = HMAC<SHA256>.authenticationCode(
-        for: Data(stringToSign.utf8),
-        using: SymmetricKey(data: signingKey)
-    ).compactMap { String(format: "%02x", $0) }.joined()
-    let authorizationHeader = "\(algorithm) Credential=\(accessKey)/\(credentialScope), SignedHeaders=\(signedHeaders), Signature=\(signature)"
-    let headers = [
-        "x-amz-date": amzDate,
-        "x-amz-content-sha256": payloadHash,
-        "Authorization": authorizationHeader,
-    ]
-    return headers
+    let payloadHash = sha256hash(data: Data())
+    let accessKey: String
+    let secretKey: String
+    let region: String
+    var credentialScope: String = ""
+    var hashedRequest: String = ""
+
+    /// Primary init method
+    init?(url: String) {
+        // makre sure we have a valid URL
+        guard let parsedURL = URL(string: url) else {
+            return nil
+        }
+        self.url = parsedURL
+
+        // set our datestamps
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        dateFormatter.dateFormat = "yyyMMdd'T'HHmmss'Z'"
+        amzDate = dateFormatter.string(from: now)
+        dateFormatter.dateFormat = "yyyMMdd"
+        datestamp = dateFormatter.string(from: now)
+
+        // read some prefs
+        accessKey = pref("AccessKey") as? String ?? ""
+        secretKey = pref("SecretKey") as? String ?? ""
+        region = pref("Region") as? String ?? ""
+    }
+
+    /// used only for testing
+    init(url: URL, amzDate: String, datestamp: String, accessKey: String, secretKey: String, region: String) {
+        self.url = url
+        self.amzDate = amzDate
+        self.datestamp = datestamp
+        self.accessKey = accessKey
+        self.secretKey = secretKey
+        self.region = region
+    }
+
+    /// build a canonical request string
+    func createCanonicalRequest() -> String {
+        let method = "GET"
+        let canonicalURI = url.path
+        let host = url.host ?? ""
+        let canonicalizedQueryString = url.query ?? ""
+        let canonicalHeaders = "host:\(host)\nx-amz-date:\(amzDate)\n"
+        return [
+            method,
+            canonicalURI,
+            canonicalizedQueryString,
+            canonicalHeaders,
+            signedHeaders,
+            payloadHash,
+        ].joined(separator: "\n")
+    }
+
+    /// create a signing key for the request signature
+    func createSignatureKey() -> Data {
+        let keyData = Data("AWS4\(secretKey)".utf8)
+        let kdate = sign(key: keyData, message: datestamp)
+        let kregion = sign(key: kdate, message: region)
+        let kservice = sign(key: kregion, message: "s3")
+        let signatureKey = sign(key: kservice, message: "aws4_request")
+        return signatureKey
+    }
+
+    /// create a signature for the request
+    func createSignature() -> String {
+        let stringToSign = "\(algorithm)\n\(amzDate)\n\(credentialScope)\n\(hashedRequest)"
+        let signingKey = createSignatureKey()
+        return sign(key: signingKey, message: stringToSign).compactMap { String(format: "%02x", $0)
+        }.joined()
+    }
+
+    /// create the actual S3 headers needed for the request
+    func createHeaders() -> [String: String] {
+        let signature = createSignature()
+        let authorizationHeader = "\(algorithm) Credential=\(accessKey)/\(credentialScope), SignedHeaders=\(signedHeaders), Signature=\(signature)"
+
+        let headers = [
+            "x-amz-date": amzDate,
+            "x-amz-content-sha256": payloadHash,
+            "Authorization": authorizationHeader,
+        ]
+        return headers
+    }
 }
 
 /// Adds a shared access signature to the request URL
@@ -98,8 +130,12 @@ class S3Middleware: MunkiMiddleware {
         let s3endpoint = pref("S3Endpoint") as? String ?? "s3.amazonaws.com"
         var modifiedRequest = request
         if modifiedRequest.url.contains(s3endpoint) {
-            let s3headers = s3AuthHeaders(request.url)
-            modifiedRequest.headers.merge(s3headers, uniquingKeysWith: { _, new in new })
+            if let headersBuilder = S3RequestHeadersBuilder(url: modifiedRequest.url) {
+                let s3headers = headersBuilder.createHeaders()
+                modifiedRequest.headers.merge(s3headers, uniquingKeysWith: {
+                    _, new in new
+                })
+            }
         }
         return modifiedRequest
     }
@@ -107,14 +143,14 @@ class S3Middleware: MunkiMiddleware {
 
 // MARK: dylib "interface"
 
-/// Function with C calling style for our dylib. We use it to instantiate the Repo object and return an instance
-@_cdecl("createPlugin")
-public func createPlugin() -> UnsafeMutableRawPointer {
-    return Unmanaged.passRetained(S3MiddlewareBuilder()).toOpaque()
-}
-
 final class S3MiddlewareBuilder: MiddlewarePluginBuilder {
     override func create() -> MunkiMiddleware {
         return S3Middleware()
     }
+}
+
+/// Function with C calling style for our dylib. We use it to instantiate the Repo object and return an instance
+@_cdecl("createPlugin")
+public func createPlugin() -> UnsafeMutableRawPointer {
+    return Unmanaged.passRetained(S3MiddlewareBuilder()).toOpaque()
 }
