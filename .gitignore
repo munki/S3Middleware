@@ -4,3 +4,10 @@
 # Xcode user data
 *.xcodeproj/project.xcworkspace/
 *.xcodeproj/xcuserdata/
+
+# build and packaging temp dirs
+build/
+payload/
+
+# built package
+*.pkg
