@@ -6,59 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXCopyFilesBuildPhase section */
-		C058EFC32DD39E2A002775E0 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		C058EFAF2DD1BA1A002775E0 /* S3Middleware.plugin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = S3Middleware.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
-		C058EFC52DD39E2A002775E0 /* Tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Tester; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		C058EFCD2DD39E41002775E0 /* Exceptions for "S3Middleware" folder in "Tester" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				MiddlewareProtocol.swift,
-				S3Middleware.swift,
-			);
-			target = C058EFC42DD39E2A002775E0 /* Tester */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C058EFB12DD1BA1A002775E0 /* S3Middleware */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				C058EFCD2DD39E41002775E0 /* Exceptions for "S3Middleware" folder in "Tester" target */,
-			);
 			path = S3Middleware;
-			sourceTree = "<group>";
-		};
-		C058EFC62DD39E2A002775E0 /* Tester */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Tester;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C058EFAD2DD1BA1A002775E0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C058EFC22DD39E2A002775E0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -72,7 +33,6 @@
 			isa = PBXGroup;
 			children = (
 				C058EFB12DD1BA1A002775E0 /* S3Middleware */,
-				C058EFC62DD39E2A002775E0 /* Tester */,
 				C058EFB02DD1BA1A002775E0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -81,7 +41,6 @@
 			isa = PBXGroup;
 			children = (
 				C058EFAF2DD1BA1A002775E0 /* S3Middleware.plugin */,
-				C058EFC52DD39E2A002775E0 /* Tester */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,28 +80,6 @@
 			productReference = C058EFAF2DD1BA1A002775E0 /* S3Middleware.plugin */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		C058EFC42DD39E2A002775E0 /* Tester */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C058EFC92DD39E2A002775E0 /* Build configuration list for PBXNativeTarget "Tester" */;
-			buildPhases = (
-				C058EFC12DD39E2A002775E0 /* Sources */,
-				C058EFC22DD39E2A002775E0 /* Frameworks */,
-				C058EFC32DD39E2A002775E0 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				C058EFC62DD39E2A002775E0 /* Tester */,
-			);
-			name = Tester;
-			packageProductDependencies = (
-			);
-			productName = Tester;
-			productReference = C058EFC52DD39E2A002775E0 /* Tester */;
-			productType = "com.apple.product-type.tool";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -156,9 +93,6 @@
 					C058EFAE2DD1BA1A002775E0 = {
 						CreatedOnToolsVersion = 16.3;
 						LastSwiftMigration = 1630;
-					};
-					C058EFC42DD39E2A002775E0 = {
-						CreatedOnToolsVersion = 16.3;
 					};
 				};
 			};
@@ -177,20 +111,12 @@
 			projectRoot = "";
 			targets = (
 				C058EFAE2DD1BA1A002775E0 /* S3Middleware */,
-				C058EFC42DD39E2A002775E0 /* Tester */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C058EFAC2DD1BA1A002775E0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C058EFC12DD39E2A002775E0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -350,27 +276,6 @@
 			};
 			name = Release;
 		};
-		C058EFCA2DD39E2A002775E0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		C058EFCB2DD39E2A002775E0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -388,15 +293,6 @@
 			buildConfigurations = (
 				C058EFB92DD1BA1A002775E0 /* Debug */,
 				C058EFBA2DD1BA1A002775E0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C058EFC92DD39E2A002775E0 /* Build configuration list for PBXNativeTarget "Tester" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C058EFCA2DD39E2A002775E0 /* Debug */,
-				C058EFCB2DD39E2A002775E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
