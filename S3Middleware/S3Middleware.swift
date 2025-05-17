@@ -63,6 +63,9 @@ class S3RequestHeadersBuilder {
         accessKey = pref("AccessKey") as? String ?? ""
         secretKey = pref("SecretKey") as? String ?? ""
         region = pref("Region") as? String ?? ""
+        
+        // set credential scope
+        credentialScope = "\(datestamp)/\(region)/s3/aws4_request"
     }
 
     /// used only for testing
