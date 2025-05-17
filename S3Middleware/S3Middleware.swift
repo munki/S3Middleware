@@ -39,7 +39,7 @@ class S3RequestHeadersBuilder {
     let accessKey: String
     let secretKey: String
     let region: String
-    var credentialScope: String = ""
+    var credentialScope: String
     var hashedRequest: String = ""
 
     /// Primary init method
@@ -63,9 +63,11 @@ class S3RequestHeadersBuilder {
         accessKey = pref("AccessKey") as? String ?? ""
         secretKey = pref("SecretKey") as? String ?? ""
         region = pref("Region") as? String ?? ""
-        
+
         // set credential scope
         credentialScope = "\(datestamp)/\(region)/s3/aws4_request"
+        // populate hashedRequest
+        createCanonicalRequestHash()
     }
 
     /// used only for testing
@@ -76,16 +78,20 @@ class S3RequestHeadersBuilder {
         self.accessKey = accessKey
         self.secretKey = secretKey
         self.region = region
+        // set credential scope
+        credentialScope = "\(datestamp)/\(region)/s3/aws4_request"
+        // populate hashedRequest
+        createCanonicalRequestHash()
     }
 
     /// build a canonical request string
-    func createCanonicalRequest() -> String {
+    func createCanonicalRequestHash() {
         let method = "GET"
         let canonicalURI = url.path
         let host = url.host ?? ""
         let canonicalizedQueryString = url.query ?? ""
         let canonicalHeaders = "host:\(host)\nx-amz-date:\(amzDate)\n"
-        return [
+        let canonicalRequest = [
             method,
             canonicalURI,
             canonicalizedQueryString,
@@ -93,6 +99,7 @@ class S3RequestHeadersBuilder {
             signedHeaders,
             payloadHash,
         ].joined(separator: "\n")
+        hashedRequest = sha256hash(data: Data(canonicalRequest.utf8))
     }
 
     /// create a signing key for the request signature
@@ -105,11 +112,15 @@ class S3RequestHeadersBuilder {
         return signatureKey
     }
 
+    /// generate string to sign
+    func stringToSign() -> String {
+        return "\(algorithm)\n\(amzDate)\n\(credentialScope)\n\(hashedRequest)"
+    }
+
     /// create a signature for the request
     func createSignature() -> String {
-        let stringToSign = "\(algorithm)\n\(amzDate)\n\(credentialScope)\n\(hashedRequest)"
         let signingKey = createSignatureKey()
-        return sign(key: signingKey, message: stringToSign).compactMap { String(format: "%02x", $0)
+        return sign(key: signingKey, message: stringToSign()).compactMap { String(format: "%02x", $0)
         }.joined()
     }
 
