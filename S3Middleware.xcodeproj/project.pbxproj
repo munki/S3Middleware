@@ -34,11 +34,21 @@
 			);
 			target = C05764CE2DD640C200FEF66A /* S3MiddlewareTests */;
 		};
+		C05765772DD8CDA900FEF66A /* Exceptions for "S3MiddlewareTests" folder in "S3MiddlewareTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Testing Notes.md",
+			);
+			target = C05764CE2DD640C200FEF66A /* S3MiddlewareTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C05764D02DD640C200FEF66A /* S3MiddlewareTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C05765772DD8CDA900FEF66A /* Exceptions for "S3MiddlewareTests" folder in "S3MiddlewareTests" target */,
+			);
 			path = S3MiddlewareTests;
 			sourceTree = "<group>";
 		};
