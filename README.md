@@ -3,7 +3,7 @@ This is a proof-of-concept project that builds an s3 middleware plugin for Munki
 It is a port of Wade Robson's s3 auth middleware:
 https://github.com/waderobson/s3-auth
 
-Though some unit testing was done to confirm that given the same inputs, the Swift implementation generates the same outputs as the Python implementation, as of May 15, 2025, this has not actually been tested against a repo hosted on s3. If you test it and it works, please let me know!
+Some unit testing is in place to confirm that given the same inputs, the Swift implementation generates the same outputs as the Python implementation. Some very cursory testing against a Munki repo on S3 has been successful.
 
 The middleware plugin must be installed in /usr/local/munki/middleware/, and you need Munki 7.0.0.5139 or later to test.
 
