@@ -1,3 +1,7 @@
+##Testing notes
+
+The current set of tests test that the Swift implementation of this middleware generates the same outputs as the original Python implementation.
+
 Here is a hacked-up version of the orginal Python implementation (hacked to use static dates and inputs, and print out various bits it calculates):
 
 ```python
