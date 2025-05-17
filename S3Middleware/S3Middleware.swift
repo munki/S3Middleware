@@ -7,6 +7,8 @@
 //  A proof-of-concept port of Wade Robson's s3 auth middleware
 //  https://github.com/waderobson/s3-auth
 //
+// Amazon's documentation here:
+// https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html#sig-v4-examples-get-auth-header
 
 import CryptoKit
 import Foundation
