@@ -9,7 +9,7 @@ check_exit_code() {
 }
 
 TOOL="S3Middleware"
-VERSION="2.0"
+VERSION="2.0.0"
 
 # find the Xcode project
 THISDIR=$(dirname "$0")
@@ -17,6 +17,11 @@ PROJ="${THISDIR}/${TOOL}.xcodeproj"
 if [ ! -e "${PROJ}" ] ; then
     check_exit_code 1 "${PROJ} doesn't exist"
 fi
+
+# generate a revision number for from the list of Git revisions
+GITREV=$(git log -n1 --format="%H" -- "${PROJ}")
+GITREVINDEX=$(git rev-list --count "$GITREV")
+VERSION="${VERSION}.${GITREVINDEX}"
 
 # make sure we have a build directory to use
 BUILD_DIR="${THISDIR}/build"
