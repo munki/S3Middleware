@@ -39,7 +39,6 @@ xcodebuild \
     build 1>/dev/null
 
 check_exit_code "$?" "Error building ${TOOL}.plugin"
-cp "${BUILD_DIR}/Build/Products/Release/${TOOL}.plugin" "${BINARIES_DIR}/"
 
 # build a pkg (component pkg for now)
 
