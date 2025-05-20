@@ -19,7 +19,7 @@ if [ ! -e "${PROJ}" ] ; then
 fi
 
 # generate a revision number for from the list of Git revisions
-GITREV=$(git log -n1 --format="%H" -- "${PROJ}")
+GITREV=$(git log -n1 --format="%H" -- "${THISDIR}")
 GITREVINDEX=$(git rev-list --count "$GITREV")
 VERSION="${VERSION}.${GITREVINDEX}"
 
