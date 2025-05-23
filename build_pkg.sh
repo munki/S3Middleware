@@ -18,6 +18,17 @@ if [ ! -e "${PROJ}" ] ; then
     check_exit_code 1 "${PROJ} doesn't exist"
 fi
 
+# run tests
+echo "Running tests for ${TOOL}..."
+xcodebuild test \
+    -project "${PROJ}" \
+    -configuration Debug \
+    -scheme "${TOOL}" \
+    -destination "platform=macOS,arch=$(arch)" \
+    1>/dev/null
+
+check_exit_code "$?" "Error running tests for ${TOOL}"
+
 # generate a revision number for from the list of Git revisions
 GITREV=$(git log -n1 --format="%H" -- "${THISDIR}")
 GITREVINDEX=$(git rev-list --count "$GITREV")
@@ -30,13 +41,14 @@ if [ ! -d "${BUILD_DIR}" ] ; then
 fi
 
 # build the dylib
-xcodebuild \
+echo "Building ${TOOL}.plugin..."
+xcodebuild build \
     -project "${PROJ}" \
     -configuration Release \
     -scheme "${TOOL}" \
     -destination "generic/platform=macOS" \
     -derivedDataPath "${BUILD_DIR}" \
-    build 1>/dev/null
+    1>/dev/null
 
 check_exit_code "$?" "Error building ${TOOL}.plugin"
 
@@ -51,12 +63,15 @@ chmod -R 755 "${PKG_ROOT}"
 cp "${BUILD_DIR}/Build/Products/Release/${TOOL}.plugin" "${PKG_ROOT}/usr/local/munki/middleware/"
 
 # build the pkg!
+echo "Building pkg for ${TOOL}..."
 pkgbuild \
     --root "${PKG_ROOT}" \
     --identifier "com.googlecode.munki.${TOOL}" \
     --version "${VERSION}" \
     --ownership recommended \
     "${THISDIR}/${TOOL}-${VERSION}.pkg"
+
+check_exit_code "$?" "Error building ${TOOL} pkg"
 
 #if [ $? -eq 0 ] ; then
 #    # clean up!
