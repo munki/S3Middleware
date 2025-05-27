@@ -46,8 +46,9 @@ class S3RequestHeadersBuilder {
 
     /// Primary init method
     init?(url: String) {
-        // makre sure we have a valid URL
+        // make sure we have a valid URL
         guard let parsedURL = URL(string: url) else {
+            print("ERROR: could not parse URL string \(url)")
             return nil
         }
         self.url = parsedURL
