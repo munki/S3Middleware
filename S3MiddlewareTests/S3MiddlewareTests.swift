@@ -80,4 +80,17 @@ struct S3MiddlewareTests {
         #expect(x_amz_content_sha256 == "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
         #expect(authorization == "AWS4-HMAC-SHA256 Credential=FOO/20250513/BAZ/s3/aws4_request, SignedHeaders=host;x-amz-date, Signature=e61c7ab72b15ddd42c9b5b632228ae871cbdc32e490ca661b98c27c8fd6078fb")
     }
+    
+    /// Test that a non-S3 request is returned unmodified
+    @Test func nonS3RequestShouldNotBeModified() async throws {
+        let request = MunkiMiddlewareRequest(
+            url: "https://example.com",
+            headers: [:]
+        )
+        // currently MunkiMiddlewareRequest structs are not directly comparable, so we''ll just
+        // compare the instance variables
+        let processedRequest = S3Middleware().processRequest(request)
+        #expect(processedRequest.url == request.url)
+        #expect(processedRequest.headers == request.headers)
+    }
 }
