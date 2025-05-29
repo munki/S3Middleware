@@ -34,11 +34,10 @@ GITREV=$(git log -n1 --format="%H" -- "${THISDIR}")
 GITREVINDEX=$(git rev-list --count "$GITREV")
 VERSION="${VERSION}.${GITREVINDEX}"
 
-# make sure we have a build directory to use
+# make sure we have a clean build directory to use
 BUILD_DIR="${THISDIR}/build"
-if [ ! -d "${BUILD_DIR}" ] ; then
-    mkdir "${BUILD_DIR}"
-fi
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
 
 # build the dylib
 echo "Building ${TOOL}.plugin..."
