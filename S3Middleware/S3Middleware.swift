@@ -90,9 +90,10 @@ class S3RequestHeadersBuilder {
     /// build a canonical request string
     func createCanonicalRequestHash() {
         let method = "GET"
-        let canonicalURI = url.path
-        let host = url.host ?? ""
-        let canonicalizedQueryString = url.query ?? ""
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
+        let canonicalURI = components.percentEncodedPath
+        let host = components.percentEncodedHost ?? ""
+        let canonicalizedQueryString = components.percentEncodedQuery ?? ""
         let canonicalHeaders = "host:\(host)\nx-amz-date:\(amzDate)\n"
         let canonicalRequest = [
             method,
