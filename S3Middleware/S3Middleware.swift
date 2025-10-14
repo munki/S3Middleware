@@ -57,6 +57,7 @@ class S3RequestHeadersBuilder {
         let now = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyMMdd'T'HHmmss'Z'"
         amzDate = dateFormatter.string(from: now)
         dateFormatter.dateFormat = "yyyMMdd"
