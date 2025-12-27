@@ -1,4 +1,4 @@
-This is a proof-of-concept project that builds an s3 middleware plugin for Munki 7.
+This is a project that builds an s3 middleware plugin for Munki 7.
 
 It is a port of Wade Robson's s3 auth middleware:
 https://github.com/waderobson/s3-auth
