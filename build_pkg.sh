@@ -9,7 +9,7 @@ check_exit_code() {
 }
 
 TOOL="S3Middleware"
-VERSION="2.0.1"
+VERSION="2.0.2"
 
 # find the Xcode project
 THISDIR=$(dirname "$0")
