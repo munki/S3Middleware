@@ -3,7 +3,7 @@
 //  S3Middleware
 //
 //  Created by Greg Neagle on 5/11/25.
-//  Modified by Adam Anklewicz on 2026-01-05 to allow percent encoding of perenthesis (using ISO formatted date as 1/5/26 is possibly January 5 or 1 March depending on locale).
+//  Modified by Adam Anklewicz on 2026-01-05 to allow percent encoding of perenthesis (using ISO formatted date as 1/5/26 is possibly January 5 or 1 May depending on locale).
 //
 //  A proof-of-concept port of Wade Robson's s3 auth middleware
 //  https://github.com/waderobson/s3-auth
