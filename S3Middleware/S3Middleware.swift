@@ -3,6 +3,7 @@
 //  S3Middleware
 //
 //  Created by Greg Neagle on 5/11/25.
+//  Modified by Adam Anklewicz on 2026-01-05 to allow percent encoding of perenthesis (using ISO formatted date as 1/5/26 is possibly January 5 or 1 March depending on locale).
 //
 //  A proof-of-concept port of Wade Robson's s3 auth middleware
 //  https://github.com/waderobson/s3-auth
@@ -88,11 +89,22 @@ class S3RequestHeadersBuilder {
         createCanonicalRequestHash()
     }
 
+    // Function to allow () to be percentage encoded.
+    private func awsUriEncode(_ string: String) -> String {
+        var allowed = CharacterSet.alphanumerics
+        allowed.insert(charactersIn: "-._~")
+        allowed.insert(charactersIn: "/")
+        return string.addingPercentEncoding(withAllowedCharacters: allowed) ?? string
+    }
+
     /// build a canonical request string
     func createCanonicalRequestHash() {
         let method = "GET"
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
-        let canonicalURI = components.percentEncodedPath
+        
+        // Call the function to handle () in the path
+        let canonicalURI = awsUriEncode(url.path)
+        
         let host = components.percentEncodedHost ?? ""
         let canonicalizedQueryString = components.percentEncodedQuery ?? ""
         let canonicalHeaders = "host:\(host)\nx-amz-date:\(amzDate)\n"
