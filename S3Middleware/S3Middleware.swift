@@ -3,6 +3,7 @@
 //  S3Middleware
 //
 //  Created by Greg Neagle on 5/11/25.
+//  Modified by Adam Anklewicz on 2026-01-05 to allow percent encoding of perenthesis (using ISO formatted date as 1/5/26 is possibly January 5 or 1 May depending on locale).
 //
 //  A proof-of-concept port of Wade Robson's s3 auth middleware
 //  https://github.com/waderobson/s3-auth
@@ -87,12 +88,29 @@ class S3RequestHeadersBuilder {
         // populate hashedRequest
         createCanonicalRequestHash()
     }
+    
+    /* Function to allow () to be percentage encoded.
+        Function tells it what characters to not encode, then encodes the rest.
+        Documentation can be found here: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html#sig-v4-examples-get-auth-header
+        As per this documentation, one must URI encode every character
+        URI encode every byte except the unreserved characters: 'A'-'Z', 'a'-'z', '0'-'9', '-', '.', '_', and '~'.
+        The space character is a reserved character and must be encoded as "%20" (and not as "+").
+        Encode the forward slash character, '/', everywhere except in the object key name. For example, if the object key name is photos/Jan/sample.jpg, the forward slash in the key name is not encoded. */
+    private func awsUriEncode(_ string: String) -> String {
+        var allowed = CharacterSet.alphanumerics // A-Z, a-z, 0-9 must not be encoded, so it's added to allowed.
+        allowed.insert(charactersIn: "-._~") // Per the documentation, - . _ and ~ must not be encoded, so they are added to the allowed list.
+        allowed.insert(charactersIn: "/") // Slashes must not be encoded, so add it to the allowed list of characters.
+        return string.addingPercentEncoding(withAllowedCharacters: allowed) ?? string // addingPercentEncoding is built into Swift and will percent encode while passing it a list of allowed characters.
+    }
 
     /// build a canonical request string
     func createCanonicalRequestHash() {
         let method = "GET"
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
-        let canonicalURI = components.percentEncodedPath
+        
+        // Call the function to handle () in the path
+        let canonicalURI = awsUriEncode(url.path)
+        
         let host = components.percentEncodedHost ?? ""
         let canonicalizedQueryString = components.percentEncodedQuery ?? ""
         let canonicalHeaders = "host:\(host)\nx-amz-date:\(amzDate)\n"
