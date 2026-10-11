@@ -111,7 +111,13 @@ class S3RequestHeadersBuilder {
         // Call the function to handle () in the path
         let canonicalURI = awsUriEncode(url.path)
         
-        let host = components.percentEncodedHost ?? ""
+        // The signed host must match the Host header that is actually sent,
+        // which includes the port when the URL specifies one
+        // (e.g. an S3-compatible server at http://localhost:9000)
+        var host = components.percentEncodedHost ?? ""
+        if let port = components.port {
+            host += ":\(port)"
+        }
         let canonicalizedQueryString = components.percentEncodedQuery ?? ""
         let canonicalHeaders = "host:\(host)\nx-amz-date:\(amzDate)\n"
         let canonicalRequest = [
